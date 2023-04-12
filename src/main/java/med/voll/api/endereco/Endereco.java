@@ -29,4 +29,35 @@ public class Endereco {
     private String cidade;
     private String uf;
 
+    public void atualizarInformacoes(DadosEndereco endereco) {
+
+        if (null != endereco.logradouro()) {
+            this.logradouro = endereco.logradouro();
+        }
+
+        if (null != endereco.bairro()) {
+            this.bairro = endereco.bairro();
+        }
+
+        if (null != endereco.cep()) {
+            this.cep = endereco.cep();
+        }
+
+        if (null != endereco.numero()) {
+            this.numero = endereco.numero();
+        }
+
+        if (null != endereco.complemento()) {
+            this.complemento = endereco.complemento();
+        }
+
+        if (null != endereco.cidade()) {
+            this.cidade = endereco.cidade();
+        }
+
+        if (null != endereco.uf()) {
+            this.uf = endereco.uf();
+        }
+    }
+
 }
