@@ -12,32 +12,34 @@ import jakarta.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
 public class TratadorDeErros {
-    
+
     @SuppressWarnings("rawtypes")
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity tratarErro404() {
         return ResponseEntity.notFound().build();
     }
-    
+
     @SuppressWarnings("rawtypes")
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity tratarErro400(MethodArgumentNotValidException ex) {
         var erros = ex.getFieldErrors();
         return ResponseEntity.badRequest().body(erros.stream().map(DadosErroValidacao::new).toList());
     }
-    
+
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity trataSQLConstraint(SQLIntegrityConstraintViolationException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+    public ResponseEntity trataSQLConstraint(Exception ex) {
+        return ResponseEntity.badRequest().body(new DadosExceptionGenerica(ex.getClass(), ex.getMessage()));
     }
-    
-    
+
     private record DadosErroValidacao(String campo, String mensagem) {
-        
+
         public DadosErroValidacao(FieldError erro) {
             this(erro.getField(), erro.getDefaultMessage());
         }
-        
+
+    }
+
+    private record DadosExceptionGenerica(Class<? extends Exception> exception, String mensagem) {
     }
 
 }
