@@ -18,14 +18,24 @@ public class Paciente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "nome", nullable = false)
     private String nome;
+
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @Column(name = "telefone", nullable = false) 
     private String telefone;
+
+    @Column(name = "cpf", nullable = false, unique = true)
     private String cpf;
 
     private Boolean ativo = true;
+
     @Embedded
     private Endereco endereco;
+
     public Paciente(CadastroDadosPaciente dados) {
         this.nome = dados.nome();
         this.email = dados.email();

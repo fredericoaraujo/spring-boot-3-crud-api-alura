@@ -1,5 +1,6 @@
 package med.voll.api.domain.medico;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,21 +24,20 @@ import med.voll.api.domain.endereco.Endereco;
 @EqualsAndHashCode(of = "id")
 public class Medico {
 
-    public Medico(CadastroDadosMedico dados) {
-        this.nome = dados.nome();
-        this.email = dados.email();
-        this.telefone = dados.telefone();
-        this.crm = dados.crm();
-        this.especialidade = dados.especialidade();
-        this.endereco = new Endereco(dados.endereco());
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "nome", nullable = false)
     private String nome;
+
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @Column(name = "crm", nullable = false, unique = true)
     private String crm;
+
+    @Column(name = "telefone", nullable = false)
     private String telefone;
     private Boolean ativo = true;
 
@@ -46,6 +46,15 @@ public class Medico {
 
     @Embedded
     private Endereco endereco;
+    
+    public Medico(CadastroDadosMedico dados) {
+        this.nome = dados.nome();
+        this.email = dados.email();
+        this.telefone = dados.telefone();
+        this.crm = dados.crm();
+        this.especialidade = dados.especialidade();
+        this.endereco = new Endereco(dados.endereco());
+    }
 
     public void atualizarInformacoes(@Valid AlterarDadosMedico dados) {
         if (null != dados.nome()) {
@@ -61,7 +70,7 @@ public class Medico {
         }
 
     }
-    
+
     public void excluir() {
         this.ativo = false;
     }
